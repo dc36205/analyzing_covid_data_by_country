@@ -7,11 +7,11 @@
 
 
 --Merging both datasets together:
---Select * --SUM(new_cases)  as total_cases, SUM(new_deaths) as total_deaths, (SUM(new_deaths)/ nullif(SUM(new_cases),0))*100 as DeathsPercentage     
---From PortfolioProject..CovidDeaths2_some_clean_perform as dea
---Join PortfolioProject..CovidVaccination  as vac
---    On dea.location = vac.location
---	and dea.date = vac.date
+Select * --SUM(new_cases)  as total_cases, SUM(new_deaths) as total_deaths, (SUM(new_deaths)/ nullif(SUM(new_cases),0))*100 as DeathsPercentage     
+From PortfolioProject..CovidDeaths2_some_clean_perform as dea
+Join PortfolioProject..CovidVaccination  as vac
+    On dea.location = vac.location
+	and dea.date = vac.date
 
 
 
@@ -52,19 +52,43 @@
 
 --Another way with a CTE
 
-With PopvsVac (Continent, Location, Date, Population, New_vaccinations, RollingPeopleVaccinated) 
-as
+--With PopvsVac (Continent, Location, Date, Population, New_vaccinations, RollingPeopleVaccinated) 
+--as
+--(
+--Select dea.continent, dea.location, dea.date, dea.population, vac.new_vaccinations, 
+--  SUM(CONVERT(int, vac.new_vaccinations)) OVER (Partition by dea.location Order by dea.location, dea.Date) as RollingPeopleVaccinated
+--From PortfolioProject..CovidDeaths2_some_clean_perform dea  
+--Join PortfolioProject..CovidVaccination vac
+--    On dea.location = vac.location
+--	and dea.date = vac.date
+--where dea.continent is not null
+----Order by 2, 3
+--)
+--select *, (RollingPeopleVaccinated/Population)*100  
+--from PopvsVac;
+
+--TEMP TABLE
+
+DROP Table if exists #PercentPopulationVaccinated
+Create Table #PercentPopulationVaccinated
 (
+Continent nvarchar(255), 
+Location nvarchar(255), 
+Date datetime, 
+Population numeric, 
+New_vaccinations numeric,
+RollingPeopleVaccinated numeric
+)
+ 
+Insert into #PercentPopulationVaccinated
 Select dea.continent, dea.location, dea.date, dea.population, vac.new_vaccinations, 
   SUM(CONVERT(int, vac.new_vaccinations)) OVER (Partition by dea.location Order by dea.location, dea.Date) as RollingPeopleVaccinated
 From PortfolioProject..CovidDeaths2_some_clean_perform dea  
 Join PortfolioProject..CovidVaccination vac
     On dea.location = vac.location
 	and dea.date = vac.date
-where dea.continent is not null
+--where dea.continent is not null
 --Order by 2, 3
-)
-select *  
-from PopvsVac;
 
-  
+select *, (RollingPeopleVaccinated/Population)*100  
+from #PercentPopulationVaccinated
