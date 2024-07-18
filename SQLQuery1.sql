@@ -19,18 +19,19 @@
 --where Location like  '%states%'
 --order by 1, 2
 
--- OJO EN LA BASE DE DATOS: CovidDeaths2_some_clean_perform Se REALIZO EN JupyterNotebook un pequeña limpieza para en las columnas continent, total_deaths, total_cases
-Select Location, date, total_cases, total_deaths, (total_deaths/total_cases)*100 as DeathPercentage  --convert(decimal(15,3),'total_deaths' / 'total_cases') --*100 as Percent-- (total_deaths/total_cases)*100 as DeathPercentage
+-- OJO EN LA BASE DE DATOS: CovidDeaths2_some_clean_perform Se REALIZO EN JupyterNotebook un pequeña limpieza para en las columnas continent, total_deaths, total_cases para remover 
+--las celdas vacias en estas columnas
+
+--Shows the likelihood of dying if you contract covid in your country
+--Select Location, date, total_cases, total_deaths, (total_deaths/total_cases)*100 as DeathPercentage  --convert(decimal(15,3),'total_deaths' / 'total_cases') --*100 as Percent-- (total_deaths/total_cases)*100 as DeathPercentage
+--From PortfolioProject..CovidDeaths2_some_clean_perform
+--where Location like  '%states%'
+--order by 1, 2
+
+-- Looking the Total Cases vs Population
+--Shows what percentage of poupulation got Covid
+
+Select Location, date, total_cases, Population, (total_cases/Population)*100 as InfectationPercentage  --convert(decimal(15,3),'total_deaths' / 'total_cases') --*100 as Percent-- (total_deaths/total_cases)*100 as DeathPercentage
 From PortfolioProject..CovidDeaths2_some_clean_perform
 where Location like  '%states%'
 order by 1, 2
-
---convert(decimal(15,3),'amount' / 'rate')
-
---convert(decimal(15,3),'total_deaths' / 'total_cases')
-
-
---CONVERT(CONVERT(decimal(15,3), sellamount) / CONVERT(decimal(15,3), rateactual))
-
---CONVERT(CONVERT(decimal(15,3), total_deaths) / CONVERT(decimal(15,3), total_cases))
-
