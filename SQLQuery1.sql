@@ -59,10 +59,37 @@
 
 
 --LET'S BREAK THINGS DOWN BY LOCATION
-Select location, MAX(cast(total_deaths as int)) as TotaldeathsCount  
+--Select location, MAX(cast(total_deaths as int)) as TotaldeathsCount  
+--From PortfolioProject..CovidDeaths2_some_clean_perform
+----From PortfolioProject..CovidDeaths
+--where continent is not null 
+--Group by location
+--order by TotaldeathsCount DESC
+
+
+--Showing continents with Highest  death count per population
+
+--Select continent, MAX(cast(total_deaths as int)) as TotaldeathsCount  
+--From PortfolioProject..CovidDeaths2_some_clean_perform
+----From PortfolioProject..CovidDeaths
+--where continent is not null 
+--Group by continent
+--order by TotaldeathsCount DESC 
+
+
+--Global numbers
+--Select date, SUM(new_cases)  as total_cases, SUM(new_deaths) as total_deaths, (SUM(new_deaths)/ nullif(SUM(new_cases),0))*100 as DeathsPercentage     
+--From PortfolioProject..CovidDeaths2_some_clean_perform
+----where Location like  '%states%'
+--where continent is not null
+--Group by date
+--order by 1, 2
+
+--Global numbers variant without the date
+Select SUM(new_cases)  as total_cases, SUM(new_deaths) as total_deaths, (SUM(new_deaths)/ nullif(SUM(new_cases),0))*100 as DeathsPercentage     
 From PortfolioProject..CovidDeaths2_some_clean_perform
---From PortfolioProject..CovidDeaths
-where continent is not null 
-Group by location
-order by TotaldeathsCount DESC
+--where Location like  '%states%'
+where continent is not null
+--Group by date
+order by 1, 2
 
