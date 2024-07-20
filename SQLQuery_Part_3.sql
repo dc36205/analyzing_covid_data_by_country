@@ -69,7 +69,7 @@ JOIN PortfolioProject.dbo.NashvilleHousing b
 where a.PropertyAddress is NULL 
 
 -------------------------------------------------------
---Breaking out Address into Individual  columns (columns, City, State)
+--Breaking out Address into Individual  columns (columns, City, State) 
 
 Select PropertyAddress
 From PortfolioProject.dbo.NashvilleHousing
@@ -175,7 +175,7 @@ Select *,
 					 )row_num
 
 From PortfolioProject.dbo.NashvilleHousing
---order by ParcelID   --quitar el order by in the CTE!!!!!!!!!!!!!
+--order by ParcelID   
 
 )
 --DELETE
@@ -200,6 +200,9 @@ From PortfolioProject.dbo.NashvilleHousing
 
 ALTER TABLE PortfolioProject.dbo.NashvilleHousing
 DROP COLUMN  OwnerAddress, TaxDistrict, PropertyAddress
+
+ALTER TABLE PortfolioProject.dbo.NashvilleHousing
+DROP COLUMN  SaleDate
 
 
 
